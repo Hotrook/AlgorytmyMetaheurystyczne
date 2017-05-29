@@ -1,19 +1,11 @@
 #ifndef FROST_TSP_CALCULATOR
 #define FROST_TSP_CALCULATOR
 
+#include "controller.hpp"
 #include "functions.hpp"
-#include <mutex>
-#include <thread>
 
 
-struct Controller{
-	mutex mtx;
-	bool cond;
 
-	Controller(){
-		cond = true;
-	}
-};
 
 
 class TSPCalculator{
@@ -53,7 +45,6 @@ private:
 
 
 
-void myTimer( int i, Controller * c );
 
 
 

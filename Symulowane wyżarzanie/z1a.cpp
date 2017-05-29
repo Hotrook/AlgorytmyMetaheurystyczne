@@ -4,7 +4,6 @@
 #include <ctime>
 #include <algorithm>
 #include <thread>
-#include <chrono>
 #include "functions.hpp"
 #include "TSPCalculator.hpp"
 
@@ -39,9 +38,7 @@ int main(){
 	findMst( n, mst, dist, input );
 	createRouteFromMST( n, mst, route );
 
-	cout << " tu " << endl;
 	TSPCalculator tsp( n, route, input, c );
-	cout << " tu " << endl;
 	double result = tsp.calculateTSP( dist, route, input );
 
 	cout << fixed ;
@@ -53,7 +50,7 @@ int main(){
 	
 	cout << endl;
 
-	// thr.join();
+	thr.join();
 
 	return 0;
 }

@@ -39,7 +39,6 @@ TSPCalculator::TSPCalculator( int n, VI & route, VPDD& input, Controller * c){
 
 double TSPCalculator::calculateTSP( VVD & dist, VI & bestRoute, VPDD& input ){
 
-	cout << "start" << endl;
 	while( haveTime() ){
 
 		PII toSwap = getTwoRandomNumbers(n);
@@ -136,12 +135,3 @@ bool TSPCalculator::haveTime(){
 
 
 
-
-
-
-void myTimer( int i, Controller * c ){
-	this_thread::sleep_for( chrono::milliseconds(max(0,i-2) * 1000 + 800 ));
-	c->mtx.lock();
-	c->cond = false;
-	c->mtx.unlock();
-}

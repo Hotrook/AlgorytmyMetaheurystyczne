@@ -15,12 +15,18 @@ void getInput( int & n, VPDD & input ){
 	}
 }
 
+
+
+
 void generatePermutation( int n, VI& route ){
 	FOR( i, 1, n-1 ){
 		int j = uniform( n - i - 1);
 		swap( route[ i ], route[ i+j ] );
 	}
 }
+
+
+
 
 void findMst( int n, VVI & mst, VVD & dist, VPDD& input ){
 	auto cmp = []( triple a, triple b ){ return a.length > b.length ;};
@@ -76,9 +82,13 @@ int uniform( int m ){
 }
 
 
+
+
 void initRand(  ){
 	srand (time(NULL));
 }
+
+
 
 
 void DFS( int n, int start, int parent, VVI & mst, VI & way ){
@@ -92,6 +102,9 @@ void DFS( int n, int start, int parent, VVI & mst, VI & way ){
 
 	way.PB( start );
 }
+
+
+
 
 void createRouteFromMST( int n,  VVI &  mst, VI& route ){
 	VI visited( n+1 );
@@ -110,15 +123,19 @@ void createRouteFromMST( int n,  VVI &  mst, VI& route ){
 	route.PB( 1 );
 }
 
+
+
+
 double calculateRoute( int n, VI & route, VPDD & input ){
 	double result = 0;
-	cout << n << endl;
-	cout << route.size() << endl;
 	FOR( i, 0, n ){
 		result += getLength( input, route[ i ], route[ i+1 ] );
 	}
 	return result;
 }
+
+
+
 
 double getLength( VPDD& input, int i, int j ){
 	double first = input[ i ].first - input[ j ].first;
@@ -126,15 +143,24 @@ double getLength( VPDD& input, int i, int j ){
 	return sqrt( first * first  + second * second );
 }
 
+
+
+
 double probability(double temp, double current,double T){
 	double tmp = exp( (temp - current )/T );
 	double result = 1.0/(1.0+tmp);
 	return result;
 }
 
+
+
+
 double getRandomNumber(){
 	return (double)rand()/((double)RAND_MAX+1.0);
 }
+
+
+
 
 PII getTwoRandomNumbers(int n){
 	PII result;
@@ -145,6 +171,8 @@ PII getTwoRandomNumbers(int n){
 	}
 	return result;
 }
+
+
 
 
 double checkSwap( int n, double tmpBest, VI & tmp, int i, int j, VPDD & input ){
