@@ -33,9 +33,9 @@ int main(){
 	initRand();
 	cout << fixed ;
 
-	findMst( n, mst, input );
-	createRouteFromMST( n, mst, route );
 
+	// findMst( n, mst, input );
+	// createRouteFromMST( n, mst, route );
 
 	Genetic * gen = new Genetic( n, c, input );
 	double result = gen->calculate( route, input );
@@ -53,7 +53,12 @@ int main(){
 
 	cout << endl;
 
-	thr.join();
+	c->mtx.lock();
+	if( c->cond == false ){
+		thr.join();
+	}
+	c->mtx.unlock();
 
-	return 0;
+	exit(0);
+	// return 0;
 }

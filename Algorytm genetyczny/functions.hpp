@@ -45,4 +45,6 @@ PII getTwoRandomNumbers(int n);
 double checkSwap( VI & tmp, int i, int j, VPDD & input );
 double calculateLength( VI& path, VPDD& input );
 
+void greedyPath(VI & p, VPDD & input, int n);
+
 #endif

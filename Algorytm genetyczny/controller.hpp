@@ -9,6 +9,7 @@
 #include <chrono>
 #include <cstdio>
 #include <iostream>
+#include "functions.hpp"
 
 using namespace std;
 

@@ -216,3 +216,36 @@ double calculateLength( VI& path, VPDD& input ){
 
 	return result;
 }
+
+
+
+
+void greedyPath(VI & p, VPDD & input, int n){
+	int first = rand() % (n - 1) + 2;
+	p.clear();
+	p = VI( n+1 );
+	VI visited = VI( n+1, 0 );
+
+	p[ 0 ] = p[ n ] = 1;
+
+	visited[ first ] = visited[ 1 ] = 1;
+	p[ 1 ] = first;
+	FOR( i, 2, n ){
+		double min = -1;
+		int pos = 0;
+
+		FOR( j, 1, n+1 ){
+			if( visited[ j ] == 0 and j != p[ i - 1 ] ){
+				double tmp = getLength( input, p[ i - 1 ], j );
+				if( tmp < min or min == -1 ){
+					min = tmp;
+					pos = j;
+				}
+			}
+		}
+
+		visited[ pos ] = 1;
+		p[ i ] = pos;
+	}
+
+}

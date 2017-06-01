@@ -21,15 +21,18 @@ private:
 	VPDD input;
 	VD currentLengths;
 
+	bool finishTime;
+
 	int n;
 	int parentNumber;
 	int childNumber;
 	int noImproveCounter;
+	int controlTime;
 
 	bool haveTime();
 	void generateFirstGeneration();
 	void createNextGeneration();
-	void selection(VPDD& input);
+	void selection();
 	void init_and_permute( VI& path );
 	void combine( int first, int second );
 	void pmx( VI & o1, VI & o2, int first, int second );

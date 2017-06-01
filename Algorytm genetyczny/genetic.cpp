@@ -3,13 +3,21 @@
 
 Genetic::Genetic( int n, Controller * c,  VPDD & input) :
 		currentPaths(VVI()), 
-		reproduction(VVI()){
+		reproduction(VVI()),
+		finishTime(true){
 	this->n = n;
 	this->c = c;
 	this->input = input;
-	parentNumber = 40;
+	parentNumber = 50;
 	childNumber = 4;
 	noImproveCounter = 0;
+	controlTime = 1000;
+	if( n > 5000 ){
+		controlTime = 500;
+	}
+	if( n > 10000 ){
+		controlTime = 200;
+	}
 
 	currentLengths = VD( parentNumber );
 }
@@ -20,28 +28,43 @@ Genetic::Genetic( int n, Controller * c,  VPDD & input) :
 double Genetic::calculate( VI& bestRoute, VPDD& input ){
 	double bestLength;
 
-	currentPaths.PB( bestRoute );
+	// currentPaths.PB( bestRoute );
 	generateFirstGeneration();
 	bestRoute = currentPaths[ 0 ];
 	bestLength = calculateLength( currentPaths[ 0 ], input );
+	cout << bestLength << endl;
+	double initial = bestLength;
+	double last = 0;
+	int iterationCounter = 0;
 
 	while( haveTime() ){
 
 		createNextGeneration();
-		selection( input );
+		selection( );
 
 		if( currentLengths[ 0 ] < bestLength ){
+			noImproveCounter = 0;
 			bestLength = currentLengths[ 0 ];
 			bestRoute = currentPaths[ 0 ];
 			cout << bestLength << endl;
 		}
 		else{ 
 			noImproveCounter++;
-			if( noImproveCounter == 10 ){
+			if( noImproveCounter % 10 == 0 ){
 				mutateAll();
-				// addNewPermutations();
-				noImproveCounter = 0;
 			}
+			if( noImproveCounter % 1000 == 0 ){
+				finishTime = false;
+			}
+		}
+
+		iterationCounter++;
+		if( iterationCounter % controlTime == 0 ){
+			double tmp = (initial - bestLength) / initial;
+			if( tmp - last < 0.0001 ){
+				finishTime = false;
+			}
+			last = tmp;
 		}
 	}
 
@@ -54,7 +77,7 @@ bool Genetic::haveTime(){
 	c->mtx.lock();
 	bool result = c->cond;
 	c->mtx.unlock();
-	return result;
+	return result & finishTime;
 }
 
 
@@ -65,8 +88,8 @@ void Genetic::createNextGeneration(){
 	reproduction = VVI();
 	
 	FOR( i, 0, parentNumber ){
-		if( rand() % 10 < 4 )
-			up( currentPaths[ i ] );
+		// if( rand() % 10 < 6 )
+		up( currentPaths[ i ] );
 		reproduction.PB( currentPaths[ i ] );
 	}
 
@@ -93,11 +116,14 @@ void Genetic::createNextGeneration(){
 
 void Genetic::generateFirstGeneration(){
 	VI tmpPath = VI();
+	int greedyPaths = 30;
 
-
-	FOR( i, 0 , parentNumber ){
+	FOR( i, 0, greedyPaths ){
+		greedyPath( tmpPath, input, n );
+		currentPaths.PB( tmpPath );
+	}
+	FOR( i, 0 , parentNumber - greedyPaths ){
 		init_and_permute( tmpPath );
-
 		currentPaths.PB( tmpPath );
 	}
 	FOR( i, 0, parentNumber ){
@@ -128,7 +154,7 @@ void Genetic::init_and_permute( VI& path ){
 
 
 
-void Genetic::selection(VPDD& input){
+void Genetic::selection(){
 	vector< PID > help;
 
 	for( int i = 0 ; i < reproduction.size() ; ++i ){
@@ -156,7 +182,7 @@ void Genetic::combine( int first, int second ){
 	VI o2 = VI( n+1 );
 
 	int num = rand()%99;
-	// if( num < 20 )
+	// if( num < 50 )
 		// pmx( o1, o2, first, second );
 	// else 
 		ox( o1, o2, first, second );
@@ -286,7 +312,7 @@ void Genetic::mutate(VI & o ){
 	double p = (double)rand()/RAND_MAX;
 	int maxPermutations = n / 5;
 
-	if( p < 0.05 ){
+	if( p < 0.1 ){
 		int mutationsNumber = rand()%maxPermutations;
 		FOR( i, 0, mutationsNumber ){
 			int first = uniform( n-1 ) + 1;
