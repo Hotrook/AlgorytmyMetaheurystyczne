@@ -6,12 +6,12 @@ void getInput( int & n, VPDD & input ){
 	cin >> n;
 	input = VPDD( n+1, make_pair( 0, 0 ) );
 	FOR( i, 0, n ){
-		
+
 		cin >> t >> x >> y;
 
 		input[ t ].first = x;
 		input[ t ].second = y;
-		
+
 	}
 }
 
@@ -28,7 +28,7 @@ void generatePermutation( int n, VI& route ){
 
 
 
-void findMst( int n, VVI & mst, VVD & dist, VPDD& input ){
+void findMst( int n, VVI & mst, VPDD& input ){
 	auto cmp = []( triple a, triple b ){ return a.length > b.length ;};
 	priority_queue< triple, vector< triple >, decltype( cmp ) > pq( cmp );
 	double result = 0;
@@ -38,33 +38,33 @@ void findMst( int n, VVI & mst, VVD & dist, VPDD& input ){
 	mst = VVI( n+1 );
 	VI visited( n+1, 0 );
 	visited[ 1 ] = 1;
-	
+
 	FOR( i, 2, n+1 ){
-		length = hypot( 
+		length = hypot(
 			input[ 1 ].first  - input[ i ].first,
-			input[ 1 ].second - input[ i ].second 
+			input[ 1 ].second - input[ i ].second
 		);
 	 	newTriple = { 1, i , length };
 		pq.push( newTriple );
 	}
 
 	FOR( i, 0, n-1 ){
-		while( visited[ pq.top().stop ] == 1 ){ 
+		while( visited[ pq.top().stop ] == 1 ){
 			pq.pop();
 		}
 		newTriple = pq.top();
 		pq.pop();
-		
+
 		result += newTriple.length;
 		mst[ newTriple.start ].PB( newTriple.stop );
 		mst[ newTriple.stop ].PB( newTriple.start );
 		visited[ newTriple.stop ] = 1;
-		
+
 		FOR( i, 1, n+1 ){
 			if( i != newTriple.stop and visited[ i ] == 0 ){
-				length = hypot( 
+				length = hypot(
 					input[ i ].first  - input[ newTriple.stop ].first,
-					input[ i ].second - input[ newTriple.stop ].second 
+					input[ i ].second - input[ newTriple.stop ].second
 				);
 				triple x = { newTriple.stop, i, length };
 
@@ -98,7 +98,7 @@ void DFS( int n, int start, int parent, VVI & mst, VI & way ){
 		if( i != parent ){
 			DFS(  n, i, start, mst, way );
 		}
-	} 
+	}
 
 	way.PB( start );
 }
@@ -110,8 +110,8 @@ void createRouteFromMST( int n,  VVI &  mst, VI& route ){
 	VI visited( n+1 );
 	vector< int > way;
 
-	
-	DFS( n, 1, -1, mst, way ); 
+
+	DFS( n, 1, -1, mst, way );
 
 	for( auto i : way ){
 		if( visited[ i ] == 0 ){
@@ -177,28 +177,31 @@ PII getTwoRandomNumbers(int n){
 
 
 
-double checkSwap( int n, double tmpBest, VI & tmp, int i, int j, VPDD & input ){
-	if( abs( i - j ) > 1 ){ 
-		tmpBest -= getLength( input, tmp[ i - 1 ], tmp[ i ]  );
-		tmpBest -= getLength( input, tmp[ i ], tmp[ i+1 ]  );
-		tmpBest -= getLength( input, tmp[ j-1 ], tmp[ j ]  );
-		tmpBest -= getLength( input, tmp[ j], tmp[ j + 1 ]  );
+double checkSwap( VI & tmp, int i, int j, VPDD & input ){
+	double tmpBest1 = 0;
+	double tmpBest2 = 0;
 
-		tmpBest += getLength( input, tmp[ i - 1 ], tmp[ j ]  );
-		tmpBest += getLength( input, tmp[ j ], tmp[ i+1 ]  );
-		tmpBest += getLength( input, tmp[ j-1 ], tmp[ i ]  );
-		tmpBest += getLength( input, tmp[ i ], tmp[ j + 1 ]  );
+	if( abs( i - j ) > 1 ){
+		tmpBest1 += getLength( input, tmp[ i - 1 ], tmp[ i ]  );
+		tmpBest1 += getLength( input, tmp[ i ], tmp[ i+1 ]  );
+		tmpBest1 += getLength( input, tmp[ j-1 ], tmp[ j ]  );
+		tmpBest1 += getLength( input, tmp[ j], tmp[ j + 1 ]  );
+
+		tmpBest2 += getLength( input, tmp[ i - 1 ], tmp[ j ]  );
+		tmpBest2 += getLength( input, tmp[ j ], tmp[ i+1 ]  );
+		tmpBest2 += getLength( input, tmp[ j-1 ], tmp[ i ]  );
+		tmpBest2 += getLength( input, tmp[ i ], tmp[ j + 1 ]  );
 	}
 	else{
 		if( j < i ) swap( i, j );
-		tmpBest -= getLength( input, tmp[ i - 1 ], tmp[ i ] );
-		tmpBest -= getLength( input, tmp[ j ], tmp[ j+1 ] );
+		tmpBest1 += getLength( input, tmp[ i - 1 ], tmp[ i ] );
+		tmpBest1 += getLength( input, tmp[ j ], tmp[ j+1 ] );
 
-		tmpBest += getLength( input, tmp[ i - 1 ], tmp[ j ] );
-		tmpBest += getLength( input, tmp[ i ], tmp[ j+1 ] );
-		
+		tmpBest2 += getLength( input, tmp[ i - 1 ], tmp[ j ] );
+		tmpBest2 += getLength( input, tmp[ i ], tmp[ j+1 ] );
+
 	}
-	return tmpBest;
+	return tmpBest2 < tmpBest1 ;
 }
 
 
@@ -209,9 +212,7 @@ double calculateLength( VI& path, VPDD& input ){
 
 	for( int i = 0 ; i < path.size()-1 ; ++i ){
 		result += getLength( input, path[ i ], path[ i + 1 ] );
-	}		
+	}
 
 	return result;
 }
-
-

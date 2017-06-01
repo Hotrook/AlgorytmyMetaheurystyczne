@@ -13,19 +13,22 @@ using namespace std;
 
 #define FOR( i, a, b ) 		for( int i = a ; i < b ; ++i )
 #define VPDD 				vector< pair< double, double> >
-#define VVD 				vector< vector< double > > 
-#define VI 					vector< int > 
+#define VVD 				vector< vector< double > >
+#define VI 					vector< int >
+#define VD 					vector< double >
 #define VVI 				vector< VI >
 #define VVPDI				vector< vector< pair< double, int > > >
-#define PII 				pair< int, int > 
+#define PII 				pair< int, int >
+#define PID 				pair< int, double >
 #define PB 					push_back
+#define MP 					make_pair
 
 struct triple{ int start; int stop; double length; };
 
 
 void getInput( int & n, VPDD & input );
 void generatePermutation( int n, VI& route );
-void findMst( int n, VVI & mst, VVD & dist, VPDD& input );
+void findMst( int n, VVI & mst, VPDD& input );
 
 int uniform( int m );
 void initRand();
@@ -39,7 +42,7 @@ double probability(double temp,double current,double T);
 double getRandomNumber();
 PII getTwoRandomNumbers(int n);
 
-double checkSwap( int n, double tmpBest, VI & tmp, int i, int j, VPDD & input );
+double checkSwap( VI & tmp, int i, int j, VPDD & input );
 double calculateLength( VI& path, VPDD& input );
 
 #endif

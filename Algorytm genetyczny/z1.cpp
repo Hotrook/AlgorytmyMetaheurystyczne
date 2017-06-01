@@ -19,23 +19,25 @@ int main(){
 	int n;
 	int time;
 
-	double rate;
-
 	VPDD input;
-	VVD dist; 						//distances
 	VI route;
 	VVI mst;
 	Controller * c = new Controller();
 
-	ios_base::sync_with_stdio(false);	
+	ios_base::sync_with_stdio(false);
 	getInput( n, input );
 
 	cin >> time;
 	thread thr( myTimer, time, c );
 
 	initRand();
+	cout << fixed ;
 
-	Genetic * gen = new Genetic( );
+	findMst( n, mst, input );
+	createRouteFromMST( n, mst, route );
+
+
+	Genetic * gen = new Genetic( n, c, input );
 	double result = gen->calculate( route, input );
 
 
@@ -43,25 +45,15 @@ int main(){
 
 	cout << fixed ;
 	cout << result << endl;
-	
+
 	for( auto i : route ){
 		cerr << i << " ";
 	}
-	
+
+
 	cout << endl;
 
 	thr.join();
 
 	return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
