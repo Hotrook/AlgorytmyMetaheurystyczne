@@ -41,7 +41,6 @@ private:
 	void addNewPermutations();
 	void mutate( VI & o );
 	void mutateAll();
-	void printWithPivots( VI& o, int first, int second );
 	void hardFirstGeneration();
 	void hardMutate(VI & tmp );
 	void cx(VI & o1, int first, int second);

@@ -28,11 +28,9 @@ Genetic::Genetic( int n, Controller * c,  VPDD & input) :
 double Genetic::calculate( VI& bestRoute, VPDD& input ){
 	double bestLength;
 
-	// currentPaths.PB( bestRoute );
 	generateFirstGeneration();
 	bestRoute = currentPaths[ 0 ];
 	bestLength = calculateLength( currentPaths[ 0 ], input );
-	cout << bestLength << endl;
 	double initial = bestLength;
 	double last = 0;
 	int iterationCounter = 0;
@@ -46,7 +44,6 @@ double Genetic::calculate( VI& bestRoute, VPDD& input ){
 			noImproveCounter = 0;
 			bestLength = currentLengths[ 0 ];
 			bestRoute = currentPaths[ 0 ];
-			cout << bestLength << endl;
 		}
 		else{ 
 			noImproveCounter++;
@@ -61,7 +58,7 @@ double Genetic::calculate( VI& bestRoute, VPDD& input ){
 		iterationCounter++;
 		if( iterationCounter % controlTime == 0 ){
 			double tmp = (initial - bestLength) / initial;
-			if( tmp - last < 0.0001 ){
+			if( tmp - last < 0.00015 ){
 				finishTime = false;
 			}
 			last = tmp;
@@ -332,30 +329,6 @@ void Genetic::mutateAll(){
 	}
 }
 
-
-
-
-void Genetic::printWithPivots( VI& o, int first, int second ){
-	FOR( i, 0, first ){
-		printf( "%2d ", o[ i ] );
-	}
-
-	cout << "\t";
-
-
-
-	FOR( i, first, second+1 ){
-		printf( "%2d ", o[ i ] );
-	}
-
-	cout << "\t";
-
-	FOR( i, second+1, n+1 ){
-		printf( "%2d ", o[ i ] );
-	}
-
-	cout << endl;
-}
 
 
 

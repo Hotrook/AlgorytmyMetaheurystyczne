@@ -28,14 +28,14 @@ int main(){
 	getInput( n, input );
 
 	cin >> time;
+	time = ( time * 2 )/3;
+	if( time > n ) time = n;
+	if( time > 200 ) time = 200; 
 	thread thr( myTimer, time, c );
 
 	initRand();
-	cout << fixed ;
 
 
-	// findMst( n, mst, input );
-	// createRouteFromMST( n, mst, route );
 
 	Genetic * gen = new Genetic( n, c, input );
 	double result = gen->calculate( route, input );

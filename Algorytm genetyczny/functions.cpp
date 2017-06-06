@@ -128,8 +128,6 @@ void createRouteFromMST( int n,  VVI &  mst, VI& route ){
 
 double calculateRoute( int n, VI & route, VPDD & input ){
 	double result = 0;
-	cout << n << endl;
-	cout << route.size() << endl;
 	FOR( i, 0, n ){
 		result += getLength( input, route[ i ], route[ i+1 ] );
 	}
