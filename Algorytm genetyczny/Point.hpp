@@ -6,7 +6,7 @@
 //  Copyright © 2017 Hotrook. All rights reserved.
 //
 
-#ifndef Point_hpp
+#ifndef Point_hpp	 	
 #define Point_hpp
 
 #include <stdio.h>

@@ -1,9 +1,8 @@
 //
 //  Mapper.hpp
 //  OpenGLLearn
-///Users/sebastianmroz/Desktop/CODING/xCode/OpenGLLearn/OpenGLLearn/Mapper.cpp
-//  Created by Sebastian Mróz on 17.08.2017.
-//  Copyright © 2017 Sebastian Mróz. All rights reserved.
+//  Created by Hotrook on 17.08.2017.
+//  Copyright © 2017 Hotrook. All rights reserved.
 //
 
 #ifndef Mapper_hpp
