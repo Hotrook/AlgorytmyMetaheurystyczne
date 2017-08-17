@@ -56,8 +56,8 @@ double TSPCalculator::calculateTSP( VVD & dist, VI & bestRoute, VPDD& input ){
 			curRouteLen = afterSwapLen;
 			swap( route[ toSwap.first ], route[ toSwap.second ] );
 
+			cout << curRouteLen << endl;
 			if( curRouteLen < bestRouteEverLen ){
-
 				bestRouteEverLen = curRouteLen;
 				bestRoute = route;
 			}

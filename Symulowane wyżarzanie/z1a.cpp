@@ -37,6 +37,8 @@ int main(){
 
 	findMst( n, mst, dist, input );
 	createRouteFromMST( n, mst, route );
+	// greedyPath( route, input, n);
+	up( route, input );
 
 	TSPCalculator tsp( n, route, input, c );
 	double result = tsp.calculateTSP( dist, route, input );

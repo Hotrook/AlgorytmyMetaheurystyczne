@@ -175,7 +175,7 @@ PII getTwoRandomNumbers(int n){
 
 
 
-double checkSwap( int n, double tmpBest, VI & tmp, int i, int j, VPDD & input ){
+double checkSwap(int n, double tmpBest, VI & tmp, int i, int j, VPDD & input ){
 	if( abs( i - j ) > 1 ){ 
 		tmpBest -= getLength( input, tmp[ i - 1 ], tmp[ i ]  );
 		tmpBest -= getLength( input, tmp[ i ], tmp[ i+1 ]  );
@@ -200,4 +200,89 @@ double checkSwap( int n, double tmpBest, VI & tmp, int i, int j, VPDD & input ){
 }
 
 
+
+
+
+
+
+
+
+void greedyPath(VI & p, VPDD & input, int n){
+	int first = rand() % (n - 1) + 2;
+	p.clear();
+	p = VI( n+1 );
+	VI visited = VI( n+1, 0 );
+
+	p[ 0 ] = p[ n ] = 1;
+
+	visited[ first ] = visited[ 1 ] = 1;
+	p[ 1 ] = first;
+	FOR( i, 2, n ){
+		double min = -1;
+		int pos = 0;
+
+		FOR( j, 1, n+1 ){
+			if( visited[ j ] == 0 and j != p[ i - 1 ] ){
+				double tmp = getLength( input, p[ i - 1 ], j );
+				if( tmp < min or min == -1 ){
+					min = tmp;
+					pos = j;
+				}
+			}
+		}
+
+		visited[ pos ] = 1;
+		p[ i ] = pos;
+	}
+
+}
+
+
+
+
+
+void up(VI & o, VPDD & input ){
+	int n = o.size();
+	FOR( i, 0 , 1000000 ){
+		int first = uniform( n-1 ) + 1;
+		int second = uniform( n-1 ) + 1;
+
+		if( checkSwap( o, first, second, input ) ){
+			swap( o[ first ], o[ second ] );
+		}
+	}
+}
+
+
+
+
+
+
+
+double checkSwap( VI & tmp, int i, int j, VPDD & input ){
+	double tmpBest1 = 0;
+	double tmpBest2 = 0;
+
+	if( abs( i - j ) > 1 ){
+		tmpBest1 += getLength( input, tmp[ i - 1 ], tmp[ i ]  );
+		tmpBest1 += getLength( input, tmp[ i ], tmp[ i+1 ]  );
+		tmpBest1 += getLength( input, tmp[ j-1 ], tmp[ j ]  );
+		tmpBest1 += getLength( input, tmp[ j], tmp[ j + 1 ]  );
+
+		tmpBest2 += getLength( input, tmp[ i - 1 ], tmp[ j ]  );
+		tmpBest2 += getLength( input, tmp[ j ], tmp[ i+1 ]  );
+		tmpBest2 += getLength( input, tmp[ j-1 ], tmp[ i ]  );
+		tmpBest2 += getLength( input, tmp[ i ], tmp[ j + 1 ]  );
+	}
+	else{
+		if( j < i ) swap( i, j );
+		tmpBest1 += getLength( input, tmp[ i - 1 ], tmp[ i ] );
+		tmpBest1 += getLength( input, tmp[ j ], tmp[ j+1 ] );
+
+		tmpBest2 += getLength( input, tmp[ i - 1 ], tmp[ j ] );
+		tmpBest2 += getLength( input, tmp[ i ], tmp[ j+1 ] );
+
+	}
+	return tmpBest2 < tmpBest1 ;
+}
 

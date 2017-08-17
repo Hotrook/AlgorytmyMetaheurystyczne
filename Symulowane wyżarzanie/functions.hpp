@@ -40,5 +40,9 @@ double getRandomNumber();
 PII getTwoRandomNumbers(int n);
 
 double checkSwap( int n, double tmpBest, VI & tmp, int i, int j, VPDD & input );
+double checkSwap( VI & tmp, int i, int j, VPDD & input );
+
+void greedyPath(VI & p, VPDD & input, int n);
+void up(VI & o, VPDD & input );
 
 #endif
