@@ -87,8 +87,12 @@ void permute( std::vector<Point> & route ){
 }
 
 void drawRoute(sf::RenderWindow * window, SynchronizedRoute * sroute){
+    std::vector<Point> windowPoints; 
+    Mapper mapper( sroute->points, windowPoints, window->getSize().x, window->getSize().y); 
+    mapper.mapPointsToWindow();
     while( window->isOpen() ){
         sf::Event event;
+
         
         while( window->pollEvent(event)){
             if( event.type == sf::Event::Closed )
@@ -100,7 +104,8 @@ void drawRoute(sf::RenderWindow * window, SynchronizedRoute * sroute){
         sroute->routeMutex.lock();
         if( sroute->updated ){
             window->clear();
-            drawRoute( sroute->points, sroute->route, *window );
+            drawRoute( windowPoints, sroute->route, *window );
+            sroute->updated = false;
             window->display();
         }
         if( sroute->finish ){

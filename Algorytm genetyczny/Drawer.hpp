@@ -15,6 +15,7 @@
 #include <SFML/Graphics.hpp>
 #include "Point.hpp"
 #include "SynchronizedRoute.hpp"
+#include "Mapper.hpp"
 
 const int X_SIZE = 1440;
 const int Y_SIZE = 850;
