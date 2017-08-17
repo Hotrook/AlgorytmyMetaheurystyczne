@@ -6,13 +6,12 @@
 #include <cstdlib>
 #include <cmath>
 #include <queue>
-
+#include "Point.hpp"
 
 
 using namespace std;
 
 #define FOR( i, a, b ) 		for( int i = a ; i < b ; ++i )
-#define VPDD 				vector< pair< double, double> >
 #define VVD 				vector< vector< double > >
 #define VI 					vector< int >
 #define VD 					vector< double >
@@ -26,25 +25,25 @@ using namespace std;
 struct triple{ int start; int stop; double length; };
 
 
-void getInput( int & n, VPDD & input );
+void getInput( int & n, std::vector<Point> & input );
 void generatePermutation( int n, VI& route );
-void findMst( int n, VVI & mst, VPDD& input );
+void findMst( int n, VVI & mst, std::vector<Point> & input );
 
 int uniform( int m );
 void initRand();
 void DFS( int n, int start, int parent, VVI & mst, VI & way );
 
 void createRouteFromMST( int n,  VVI &  mst, VI& route );
-double calculateRoute( int n, VI &, VPDD & input );
-double getLength( VPDD& input, int i, int j );
+double calculateRoute( int n, VI &, std::vector<Point> & input );
+double getLength( std::vector<Point>& input, int i, int j );
 
 double probability(double temp,double current,double T);
 double getRandomNumber();
 PII getTwoRandomNumbers(int n);
 
-double checkSwap( VI & tmp, int i, int j, VPDD & input );
-double calculateLength( VI& path, VPDD& input );
+double checkSwap( VI & tmp, int i, int j, std::vector<Point> & input );
+double calculateLength( VI& path, std::vector<Point>& input );
 
-void greedyPath(VI & p, VPDD & input, int n);
+void greedyPath(VI & p, std::vector<Point> & input, int n);
 
 #endif

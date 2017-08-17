@@ -1,25 +1,31 @@
 #ifndef FROST_GENETIC
 #define FROST_GENETIC
 
+
+#include <algorithm>
+
+#include "SynchronizedRoute.hpp"
 #include "functions.hpp"
 #include "controller.hpp"
-#include <algorithm>
 
 
 class Genetic{ 
 
 public:
 
-	Genetic( int n, Controller * c, VPDD & input );
-	double calculate( VI& bestRoute, VPDD& input );
+	Genetic( int n, Controller * c, std::vector<Point> & input, SynchronizedRoute * sroute );
+
+	double calculate( VI& bestRoute, std::vector<Point>& input );
 
 private:
 
 	Controller * c;
 	VVI currentPaths;
 	VVI reproduction;
-	VPDD input;
+	std::vector<Point> input;
 	VD currentLengths;
+
+	SynchronizedRoute * sroute;
 
 	bool finishTime;
 

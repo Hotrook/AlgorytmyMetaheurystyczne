@@ -1,16 +1,16 @@
 #include "functions.hpp"
 
-void getInput( int & n, VPDD & input ){
+void getInput( int & n, std::vector<Point> & input ){
 	int t;
 	double x, y;
 	cin >> n;
-	input = VPDD( n+1, make_pair( 0, 0 ) );
+	input = std::vector<Point>( n+1, Point( 0, 0 ) );
 	FOR( i, 0, n ){
 
 		cin >> t >> x >> y;
 
-		input[ t ].first = x;
-		input[ t ].second = y;
+		input[ t ].x = x;
+		input[ t ].y = y;
 
 	}
 }
@@ -28,7 +28,7 @@ void generatePermutation( int n, VI& route ){
 
 
 
-void findMst( int n, VVI & mst, VPDD& input ){
+void findMst( int n, VVI & mst, std::vector<Point>& input ){
 	auto cmp = []( triple a, triple b ){ return a.length > b.length ;};
 	priority_queue< triple, vector< triple >, decltype( cmp ) > pq( cmp );
 	double result = 0;
@@ -41,8 +41,8 @@ void findMst( int n, VVI & mst, VPDD& input ){
 
 	FOR( i, 2, n+1 ){
 		length = hypot(
-			input[ 1 ].first  - input[ i ].first,
-			input[ 1 ].second - input[ i ].second
+			input[ 1 ].x  - input[ i ].x,
+			input[ 1 ].y - input[ i ].y
 		);
 	 	newTriple = { 1, i , length };
 		pq.push( newTriple );
@@ -63,8 +63,8 @@ void findMst( int n, VVI & mst, VPDD& input ){
 		FOR( i, 1, n+1 ){
 			if( i != newTriple.stop and visited[ i ] == 0 ){
 				length = hypot(
-					input[ i ].first  - input[ newTriple.stop ].first,
-					input[ i ].second - input[ newTriple.stop ].second
+					input[ i ].x  - input[ newTriple.stop ].x,
+					input[ i ].y - input[ newTriple.stop ].y
 				);
 				triple x = { newTriple.stop, i, length };
 
@@ -126,7 +126,7 @@ void createRouteFromMST( int n,  VVI &  mst, VI& route ){
 
 
 
-double calculateRoute( int n, VI & route, VPDD & input ){
+double calculateRoute( int n, VI & route, std::vector<Point> & input ){
 	double result = 0;
 	FOR( i, 0, n ){
 		result += getLength( input, route[ i ], route[ i+1 ] );
@@ -137,9 +137,9 @@ double calculateRoute( int n, VI & route, VPDD & input ){
 
 
 
-double getLength( VPDD& input, int i, int j ){
-	double first = input[ i ].first - input[ j ].first;
-	double second = input[ i ].second - input[ j ].second;
+double getLength( std::vector<Point>& input, int i, int j ){
+	double first = input[ i ].x - input[ j ].x;
+	double second = input[ i ].y - input[ j ].y;
 	return sqrt( first * first  + second * second );
 }
 
@@ -175,7 +175,7 @@ PII getTwoRandomNumbers(int n){
 
 
 
-double checkSwap( VI & tmp, int i, int j, VPDD & input ){
+double checkSwap( VI & tmp, int i, int j, std::vector<Point> & input ){
 	double tmpBest1 = 0;
 	double tmpBest2 = 0;
 
@@ -205,7 +205,7 @@ double checkSwap( VI & tmp, int i, int j, VPDD & input ){
 
 
 
-double calculateLength( VI& path, VPDD& input ){
+double calculateLength( VI& path, std::vector<Point>& input ){
 	double result = 0;
 
 	for( int i = 0 ; i < path.size()-1 ; ++i ){
@@ -218,7 +218,7 @@ double calculateLength( VI& path, VPDD& input ){
 
 
 
-void greedyPath(VI & p, VPDD & input, int n){
+void greedyPath(VI & p, std::vector<Point> & input, int n){
 	int first = rand() % (n - 1) + 2;
 	p.clear();
 	p = VI( n+1 );

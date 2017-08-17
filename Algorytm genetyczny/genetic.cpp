@@ -1,10 +1,11 @@
 #include "genetic.hpp"
 
 
-Genetic::Genetic( int n, Controller * c,  VPDD & input) :
+Genetic::Genetic( int n, Controller * c,  std::vector<Point> & input, SynchronizedRoute * sr ) :
 		currentPaths(VVI()), 
 		reproduction(VVI()),
-		finishTime(true){
+		finishTime(true),
+		sroute(sr){
 	this->n = n;
 	this->c = c;
 	this->input = input;
@@ -25,10 +26,13 @@ Genetic::Genetic( int n, Controller * c,  VPDD & input) :
 
 
 
-double Genetic::calculate( VI& bestRoute, VPDD& input ){
+double Genetic::calculate( VI& bestRoute, std::vector<Point>& input ){
 	double bestLength;
 
 	generateFirstGeneration();
+	sroute->routeMutex.lock();
+	sroute->updated = true;
+	sroute->routeMutex.unlock();
 	bestRoute = currentPaths[ 0 ];
 	bestLength = calculateLength( currentPaths[ 0 ], input );
 	double initial = bestLength;
@@ -42,8 +46,12 @@ double Genetic::calculate( VI& bestRoute, VPDD& input ){
 
 		if( currentLengths[ 0 ] < bestLength ){
 			noImproveCounter = 0;
-			bestLength = currentLengths[ 0 ];
-			bestRoute = currentPaths[ 0 ];
+			cout << bestLength << endl;
+			sroute->routeMutex.lock();
+				bestLength = currentLengths[ 0 ];
+				bestRoute = currentPaths[ 0 ];
+				sroute->updated = true;
+			sroute->routeMutex.unlock();
 		}
 		else{ 
 			noImproveCounter++;
@@ -65,6 +73,7 @@ double Genetic::calculate( VI& bestRoute, VPDD& input ){
 		}
 	}
 
+	sroute->finish = true;
 	return bestLength;
 }
 
